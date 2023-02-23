@@ -26,7 +26,7 @@ Function wpm {
 
     If (($Command -in $local:commandArray) -or ($Command -in $local:optionArray)) {
         switch ($Command) {
-            "install" {  }
+            "install" { [WindowsPackageManager]::Install($Options, $Package) }
             Default {}
         }
     }
@@ -41,13 +41,26 @@ class WindowsPackageManager{
             If($IOpt -eq "--name"){
                 switch ($Package) {
                     "scoop" 
-                    {  Set-ExecutionPolicy RemoteSigned -Scope CurrentUser;
-                        Invoke-RestMethod get.scoop.sh | Invoke-Expression 
+                    {  
+                        If((Get-Command scoop.ps1) -or (Get-Command scoop.cmd)){
+                            Write-Host "The scoop application is already installed"
+                           return true 
+                        }
+                        Else{
+                            try {
+                                Set-ExecutionPolicy RemoteSigned -Scope CurrentUser;
+                                Invoke-RestMethod get.scoop.sh | Invoke-Expression 
+                                return true
+                            }
+                            catch {
+                                return false
+                            }
+                        }
                     }
-                    # "chocolatey"
-                    # {
+                    "chocolatey"
+                    {
 
-                    # }
+                    }
                     Default {}
                 }
             }
