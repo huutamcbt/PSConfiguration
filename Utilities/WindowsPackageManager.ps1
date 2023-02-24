@@ -116,4 +116,16 @@ class WindowsPackageManager{
         Write-Host "  -?,--help" -ForegroundColor White -NoNewline; Write-Host "`t Shows help about the selected command `n"
         Write-Host "More help can be found at : https://archlinux.org/"
     }
+    
+    static [void] ShowVersion(){
+        Write-Host "v1.0"
+    }
+
+    static [void] ShowInfo(){
+        Write-Host "Customizable Windows Package Manager v1.0"
+        Write-Host "Copyright (c) huutamcbt `n"
+        Write-Host "Windows: Windows.Desktop"
+        Write-Host "System Architecture: X64"
+    }
+
 }

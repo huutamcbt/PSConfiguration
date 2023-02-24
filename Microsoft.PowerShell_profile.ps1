@@ -28,11 +28,17 @@ Function wpm {
     [string[]]$local:commandArray = "install", "show", "list", "search", "uninstall"
     [string[]]$local:optionArray = "-v", "--version", "--info", "-?", '--help'
     #$commandDictionary = @{ install = "Install"; show = "Show"; list = "List"; search  = "Search"; uninstall = "Uninstall"}
-
+    
     If (($Command -in $local:commandArray) -or ($Command -in $local:optionArray)) {
+        
         switch ($Command) {
             "install" { [WindowsPackageManager]::Install($Options, $Package) }
             "uninstall" { [WindowsPackageManager]::Uninstall($Options, $Package)}
+            #"-v" { [WindowsPackageManager]::ShowVersion() }
+            "--version" { [WindowsPackageManager]::ShowVersion() }
+            "--info" { [WindowsPackageManager]::ShowInfo() }
+            #"-?" { [WindowsPackageManager]::ShowWPMInstruction() }
+            "--help" { [WindowsPackageManager]::ShowWPMInstruction() }
             Default {}
         }
     }
