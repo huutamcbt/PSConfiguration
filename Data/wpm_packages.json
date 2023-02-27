@@ -4,27 +4,31 @@
         "Id": "Scoop.Scoop",
         "Version": "0.3.1",
         "Source": "wpm",
-        "Installed": false
+        "Installed": true,
+        "Information": "The scoop application"
     },
     {
         "Name": "chocolatey",
         "Id": "Choco.Choco",
         "Version": "1.3.0",
         "Source": "wpm",
-        "Installed": false
+        "Installed": true,
+        "Information":"The chocolatey application"
     },
     {
         "Name": "winget",
         "Id": "Winget.Winget",
         "Version": "1.4.10173",
         "Source": "wpm",
-        "Installed": false
+        "Installed": false,
+        "Information":"The winget application"
     },
     {
         "Name": "oh-my-posh",
         "Id": "OhMyPosh.OhMyPosh",
         "Version": "14.8.0",
         "Source": "wpm",
-        "Installed": false
+        "Installed": false,
+        "Information":"The oh-my-posh application"
     }
 ]
