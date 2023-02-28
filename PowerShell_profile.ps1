@@ -1,9 +1,11 @@
-If ($IsWindows) {
+If (($IsWindows -eq $true) -or ($null -eq $IsWindows)) {
     # Get the current directory of this powershell file
     [string]$local:currentLocation = Split-Path -Parent $MyInvocation.MyCommand.Definition
     . "$currentLocation\Utilities\WindowsPackageManager.ps1"
     
+    # Add JAVA_HOME to the Path environment variable
     $Env:Path += ';$JAVA_HOME\bin'
+
     # Check the existence of oh-my-posh application
     # And set the tokyonight theme as the oh-my-posh default theme
     try {

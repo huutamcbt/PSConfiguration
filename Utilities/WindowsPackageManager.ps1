@@ -225,6 +225,9 @@ class WindowsPackageManager {
                         If (-Not (Get-Command winget.exe -ErrorAction SilentlyContinue)) {
                             Write-Host "The winget application is already uninstalled"
                         }
+                        Elseif((Get-AppPackage -Name Microsoft.DesktopAppInstaller).NonRemovable -eq $true){
+                            Write-Host "The winget cannot be installed"
+                        }
                         Else {
                             try {
                                 Write-Host "The winget is uninstalling ..."
@@ -416,7 +419,6 @@ class WindowsPackageManager {
         }
     }
     
-
     static [void] Search([string]$IOpt, [string]$Package) {
         $Y = $global:Host.UI.RawUI.CursorPosition.Y
         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y }
