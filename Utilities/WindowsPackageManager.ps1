@@ -1,6 +1,8 @@
+
 # This class is used to manage the method related to WPM actions such as install, uninstall, search,...
 class WindowsPackageManager {
     hidden [string]$currentDir = (Split-Path -Parent $MyInvocation.MyCommand.Definition)
+   
     # Install method is responsible for package installing 
     static [void] Install([string]$IOpt, [string]$Package) {
         try {
@@ -168,6 +170,7 @@ class WindowsPackageManager {
                         Write-Host "Invalid package" -ForegroundColor Red
                     }
                 }
+                
             }
             Elseif (($IOpt -eq "--help") -or ($IOpt -eq "-?")) {
                 [WindowsPackageManager]::ShowInstallInstruction()
@@ -175,6 +178,7 @@ class WindowsPackageManager {
             Else {
                 [WindowsPackageManager]::ShowLackInstallInstruction()    
             }
+            
         }
         catch {
 
@@ -344,6 +348,7 @@ class WindowsPackageManager {
     }
     
     static [void] List([string]$IOpt, [string]$Package) {
+        Clear-Host
         $Y = $global:Host.UI.RawUI.CursorPosition.Y
         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y }
         Write-Host "Name"
@@ -420,6 +425,7 @@ class WindowsPackageManager {
     }
     
     static [void] Search([string]$IOpt, [string]$Package) {
+        Clear-Host
         $Y = $global:Host.UI.RawUI.CursorPosition.Y
         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y }
         Write-Host "Name"
@@ -497,6 +503,7 @@ class WindowsPackageManager {
     }
 
     static [void] Show([string]$IOpt, [string]$Package) {
+        Clear-Host
         try {
             [string]$path = "$(Split-Path -Parent $PSScriptRoot)\Data\wpm_packages.json"                
             [PSCustomObject]$local:packages = [PSCustomObject](Get-Content -Path $path | ConvertFrom-Json);
@@ -680,4 +687,6 @@ class WindowsPackageManager {
         Write-Host "Windows: Windows.Desktop"
         Write-Host "System Architecture: X64"
     }
+    
 }
+

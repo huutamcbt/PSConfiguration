@@ -1,0 +1,1 @@
+Set-Alias -Name mo -Value Measure-Object
