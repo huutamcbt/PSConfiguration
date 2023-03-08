@@ -6,11 +6,12 @@ If (($IsWindows -eq $true) -or (Get-Command powershell.exe -ErrorAction Silently
     . "$currentLocation\Utilities\WindowsPackageManager.ps1"
     . "$currentLocation\Utilities\Alias.ps1"
     . "$currentLocation\Utilities\GetSize.ps1"
+    # Configuration
     . "$currentLocation\Configuration\EnvironmentVariable.ps1"    
     . "$currentLocation\Configuration\Oh-My-Posh.ps1"    
     . "$currentLocation\Configuration\PSReadLine.ps1"    
     . "$currentLocation\Configuration\VSCode.ps1"
-    
+    . "$currentLocation\Configuration\Scoop.ps1"
     #########################################################################################################################
     # This is a customizable Windows Package Manager Function
     # Reset the Installed property of all packages which are used in wpm command
@@ -53,7 +54,7 @@ If (($IsWindows -eq $true) -or (Get-Command powershell.exe -ErrorAction Silently
             [Parameter(Mandatory)]
             [ValidateSet("install", "show", "list", "search", "uninstall", "--version", "--info", "--help")]
             [string]$Command,
-            [ValidateSet("--version", "--info", "--help")]
+            [ValidateSet("--version", "--info", "--help","--name", "--id")]
             [string]$Options,
             [string]$Package
         )   
@@ -66,11 +67,14 @@ If (($IsWindows -eq $true) -or (Get-Command powershell.exe -ErrorAction Silently
             switch ($Command) {
                 "install" { 
                     [WindowsPackageManager]::Install($Options, $Package) ;
-                    [SystemFunction]::SetStatusOfPackage()
+                    [SystemFunction]::SetStatusOfPackage();
+                    # Reload the profile to install some essential pakages
+                    . $PROFILE.CurrentUserCurrentHost;
                 }
                 "uninstall" { 
                     [WindowsPackageManager]::Uninstall($Options, $Package);
-                    [SystemFunction]::SetStatusOfPackage() 
+                    [SystemFunction]::SetStatusOfPackage();
+                    . $PROFILE.CurrentUserCurrentHost;
                 }
                 "list" { [WindowsPackageManager]::List($Options, $Package) }
                 "search" { [WindowsPackageManager]::Search($Options, $Package) }
@@ -123,52 +127,7 @@ If (($IsWindows -eq $true) -or (Get-Command powershell.exe -ErrorAction Silently
         )
         If ((-Not ($Path -eq "")) -and (-Not ($null -eq $Path))) {
             $fullPath = (Get-ChildItem -Path $Path).FullName
-            # [GetSize]::CalculateTheSize($fullPath, $Unit)
-            switch ($Unit.ToLower()) {
-                "b" {
-                    Write-Host "Name:`t" -ForegroundColor Green -NoNewline; 
-                    Write-Host $fullPath;
-                    Write-Host "Size:`t" -ForegroundColor Green -NoNewline;
-                    Write-Host "$((Get-Item  $fullPath | Measure-Object -Property Length -Sum).sum)" -NoNewline;
-                    Write-Host "B" -ForegroundColor Red
-                }
-                "kb" {
-                    Write-Host "Name:`t" -ForegroundColor Green -NoNewline; 
-                    Write-Host $fullPath;
-                    Write-Host "Size:`t" -ForegroundColor Green -NoNewline;
-                    Write-Host "$((Get-Item  $fullPath | Measure-Object -Property Length -Sum).sum / 1KB)" -NoNewline;
-                    Write-Host "KB" -ForegroundColor Red
-                }
-                "mb" {
-                    Write-Host "Name:`t" -ForegroundColor Green -NoNewline; 
-                    Write-Host $fullPath;
-                    Write-Host "Size:`t" -ForegroundColor Green -NoNewline;
-                    Write-Host "$((Get-Item  $fullPath | Measure-Object -Property Length -Sum).sum / 1MB)" -NoNewline;
-                    Write-Host "MB" -ForegroundColor Red
-                }
-                "gb" {
-                    Write-Host "Name:`t" -ForegroundColor Green -NoNewline; 
-                    Write-Host $fullPath;
-                    Write-Host "Size:`t" -ForegroundColor Green -NoNewline;
-                    Write-Host "$((Get-Item  $fullPath | Measure-Object -Property Length -Sum).sum / 1GB)" -NoNewline;
-                    Write-Host "GB" -ForegroundColor Red
-                }
-                "tb" {
-                    Write-Host "Name:`t" -ForegroundColor Green -NoNewline; 
-                    Write-Host $fullPath;
-                    Write-Host "Size:`t" -ForegroundColor Green -NoNewline;
-                    Write-Host "$((Get-Item  $fullPath | Measure-Object -Property Length -Sum).sum / 1TB)" -NoNewline;
-                    Write-Host "TB" -ForegroundColor Red
-                }
-                "pb" {
-                    Write-Host "Name:`t" -ForegroundColor Green -NoNewline; 
-                    Write-Host $fullPath;
-                    Write-Host "Size:`t" -ForegroundColor Green -NoNewline;
-                    Write-Host "$((Get-Item  $fullPath | Measure-Object -Property Length -Sum).sum / 1PB)" -NoNewline;
-                    Write-Host "PB" -ForegroundColor Red
-                }
-                Default {}
-            }
+            [GetSize]::CalculateTheSize($fullPath, $Unit)
         }
         Else {
             Write-Host "Oops, Something went wrong!"
