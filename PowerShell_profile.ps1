@@ -126,7 +126,7 @@ If (($IsWindows -eq $true) -or (Get-Command powershell.exe -ErrorAction Silently
             [string]$Unit
         )
         If ((-Not ($Path -eq "")) -and (-Not ($null -eq $Path))) {
-            $fullPath = (Get-ChildItem -Path $Path).FullName
+            $fullPath = (Get-Item -Path $Path).FullName
             [GetSize]::CalculateTheSize($fullPath, $Unit)
         }
         Else {

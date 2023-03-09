@@ -1,6 +1,6 @@
 # Check the existence of oh-my-posh application
 # And set the tokyonight theme as the oh-my-posh default theme
-[string]$themePath = "$env:POSH_THEMES_PATH/tokyonight_storm.omp.json";
+[string]$themePath = "$env:POSH_THEMES_PATH/takuya.omp.json";
 # [string]$themePath = "E:\Temp_Folder\newtheme.omp.json"
 try {
     if (Get-Command oh-my-posh.exe -ErrorAction Stop) {

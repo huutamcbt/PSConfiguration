@@ -348,48 +348,54 @@ class WindowsPackageManager {
     }
     
     static [void] List([string]$IOpt, [string]$Package) {
-        Clear-Host
+        # Clear-Host
         $Y = $global:Host.UI.RawUI.CursorPosition.Y
+        [Double]$local:X1 = $global:Host.UI.RawUI.WindowSize.Width
         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y }
-        Write-Host "Name"
-        $global:Host.UI.RawUI.CursorPosition = @{ x = 25; y = $Y }
-        Write-Host "Id"
-        $global:Host.UI.RawUI.CursorPosition = @{ x = 50; y = $Y }
-        Write-Host "Version"
-        $global:Host.UI.RawUI.CursorPosition = @{ x = 75; y = $Y }
-        Write-Host "Source"
+        Write-Host "Name" -NoNewline -ForegroundColor Green
+        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*1/4; y = $Y }
+        Write-Host "Id" -NoNewline -ForegroundColor Green
+        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*2/4; y = $Y }
+        Write-Host "Version" -NoNewline -ForegroundColor Green
+        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*3/4; y = $Y }
+        Write-Host "Source" -ForegroundColor Green
         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y + 1 }
-        Write-Host "---------------------------------------------------------------------------------"
+        for ($i = 0; $i -lt ($local:X1*3/4 + 6); $i++) {
+            Write-Host "-" -NoNewline
+        }
+        Write-Host
         try {
             [string]$path = "$(Split-Path -Parent $PSScriptRoot)\Data\wpm_packages.json"                
             [PSCustomObject]$local:packages = [PSCustomObject](Get-Content -Path $path | ConvertFrom-Json);
             If ($IOpt -eq "--name") {
-                $local:Y1 = $global:Host.UI.RawUI.CursorPosition.Y
                 for ($i = 0; $i -lt $packages.Count; $i++) {
                     If (($packages[$i].Installed -eq $true) -and ($packages[$i].Name.ToLower().Contains($Package.ToLower()))) {
+                        [Double]$local:Y1 = $global:Host.UI.RawUI.CursorPosition.Y
+                        [Double]$local:X1 = $global:Host.UI.RawUI.WindowSize.Width
                         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y1 }
-                        Write-Host $packages[$i].Name
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 25; y = $Y1 }
-                        Write-Host $packages[$i].Id
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 50; y = $Y1 }
-                        Write-Host $packages[$i].Version
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 75; y = $Y1 }
+                        Write-Host $packages[$i].Name -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*1/4; y = $Y1 }
+                        Write-Host $packages[$i].Id -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*2/4; y = $Y1 }
+                        Write-Host $packages[$i].Version -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*3/4; y = $Y1 }
                         Write-Host $packages[$i].Source
                         $Y1 += 1   
                     }
                 }
             }
             Elseif ($IOpt -eq "--id") {
-                $local:Y1 = $global:Host.UI.RawUI.CursorPosition.Y
                 for ($i = 0; $i -lt $packages.Count; $i++) {
                     If (($packages[$i].Installed -eq $true) -and ($packages[$i].Id.ToLower().Contains($Package.ToLower()))) {
+                        [Double]$local:Y1 = $global:Host.UI.RawUI.CursorPosition.Y
+                        [Double]$local:X1 = $global:Host.UI.RawUI.WindowSize.Width
                         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y1 }
-                        Write-Host $packages[$i].Name
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 25; y = $Y1 }
-                        Write-Host $packages[$i].Id
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 50; y = $Y1 }
-                        Write-Host $packages[$i].Version
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 75; y = $Y1 }
+                        Write-Host $packages[$i].Name -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*1/4; y = $Y1 }
+                        Write-Host $packages[$i].Id -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*2/4; y = $Y1 }
+                        Write-Host $packages[$i].Version -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*3/4; y = $Y1 }
                         Write-Host $packages[$i].Source
                         $Y1 += 1   
                     }
@@ -400,16 +406,18 @@ class WindowsPackageManager {
             }
             Elseif (($IOpt -eq "") -and ($Package -eq "")) {
                 
-                $local:Y1 = $global:Host.UI.RawUI.CursorPosition.Y
+                
                 for ($i = 0; $i -lt $packages.Count; $i++) {
                     If ($packages[$i].Installed -eq $true) {
+                        [Double]$local:Y1 = $global:Host.UI.RawUI.CursorPosition.Y
+                        [Double]$local:X1 = $global:Host.UI.RawUI.WindowSize.Width
                         $global:Host.UI.RawUI.CursorPosition = @{ x = 0; y = $Y1 }
-                        Write-Host $packages[$i].Name
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 25; y = $Y1 }
-                        Write-Host $packages[$i].Id
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 50; y = $Y1 }
-                        Write-Host $packages[$i].Version
-                        $global:Host.UI.RawUI.CursorPosition = @{ x = 75; y = $Y1 }
+                        Write-Host $packages[$i].Name -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*1/4; y = $Y1 }
+                        Write-Host $packages[$i].Id -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*2/4; y = $Y1 }
+                        Write-Host $packages[$i].Version -NoNewline
+                        $global:Host.UI.RawUI.CursorPosition = @{ x = $local:X1*3/4; y = $Y1 }
                         Write-Host $packages[$i].Source
                         $Y1 += 1   
                     }
@@ -420,7 +428,7 @@ class WindowsPackageManager {
             }
         }
         catch {
-            
+
         }
     }
     
