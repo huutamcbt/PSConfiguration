@@ -1,7 +1,8 @@
 try {
     [string[]]$local:extensions = @("enkia.tokyo-night","ms-vscode.powershell","PKief.material-icon-theme", 
                                     "pustelto.bracketeer", "shd101wyy.markdown-preview-enhanced", "tomoki1207.pdf", 
-                                    "zhuangtongfa.material-theme", "ritwickdey.LiveServer", "ryuta46.multi-command")
+                                    "zhuangtongfa.material-theme", "ritwickdey.LiveServer", "ryuta46.multi-command",
+                                    "shalldie.background")
     [string[]]$local:installedExtensions = code.cmd --list-extensions
     
     If(Get-Command code.cmd -ErrorAction Stop){
